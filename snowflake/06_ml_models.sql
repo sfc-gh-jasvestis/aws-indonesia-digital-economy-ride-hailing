@@ -1,0 +1,18 @@
+-- ============================================================================
+-- 06_ML_MODELS.SQL — ML Functions for Ride-Hailing & Super-App Analytics
+-- ============================================================================
+USE DATABASE RIDE_HAILING_ANALYTICS;
+USE SCHEMA ML;
+
+-- ML.FORECAST: DEMAND_FORECAST
+CREATE OR REPLACE SNOWFLAKE.ML.FORECAST ML.DEMAND_FORECAST(
+  INPUT_DATA => SYSTEM$REFERENCE('TABLE', 'CURATED.DEMAND_SUPPLY_BALANCE'),
+  SERIES_COLNAME => 'ZONE_ID',
+  TIMESTAMP_COLNAME => 'DS',
+  TARGET_COLNAME => 'Y'
+  
+);
+
+CREATE OR REPLACE TABLE ML.DEMAND_FORECAST_RESULTS AS
+SELECT * FROM TABLE(ML.DEMAND_FORECAST!FORECAST(FORECASTING_PERIODS => 14));
+
