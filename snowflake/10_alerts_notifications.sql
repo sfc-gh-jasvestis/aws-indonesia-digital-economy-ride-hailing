@@ -8,7 +8,7 @@ USE SCHEMA APP;
 CREATE OR REPLACE NOTIFICATION INTEGRATION aws_indonesia_digital_economy_ride_hailing_EMAIL_INT
   TYPE = EMAIL
   ENABLED = TRUE
-  ALLOWED_RECIPIENTS = ('jonathan.asvestis@snowflake.com');
+  ALLOWED_RECIPIENTS = ('<YOUR_EMAIL>');
 
 -- Alert: FULFILLMENT_DROP_ALERT
 CREATE OR REPLACE ALERT APP.FULFILLMENT_DROP_ALERT
@@ -22,7 +22,7 @@ IF (EXISTS (
 THEN
   CALL SYSTEM$SEND_EMAIL(
     'aws_indonesia_digital_economy_ride_hailing_EMAIL_INT',
-    'jonathan.asvestis@snowflake.com',
+    '<YOUR_EMAIL>',
     '[ALERT] Ride-Hailing & Super-App Analytics: Critical supply shortage — zone fulfillment below 80%',
     'Critical supply shortage — zone fulfillment below 80%'
   );
@@ -41,7 +41,7 @@ IF (EXISTS (
 THEN
   CALL SYSTEM$SEND_EMAIL(
     'aws_indonesia_digital_economy_ride_hailing_EMAIL_INT',
-    'jonathan.asvestis@snowflake.com',
+    '<YOUR_EMAIL>',
     '[ALERT] Ride-Hailing & Super-App Analytics: Extended high surge — review driver allocation and incentives',
     'Extended high surge — review driver allocation and incentives'
   );
