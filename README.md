@@ -120,7 +120,7 @@ Industry research and Snowflake customer outcomes:
 - **GoTo processes 2.5M ride and delivery transactions daily across 500+ cities in Indonesia** — [GoTo Investor Relations](https://www.gotocompany.com/investors)
 - **Dynamic pricing algorithms improve driver utilization 15-25% and reduce passenger wait times 30%** — [BCG Mobility](https://www.bcg.com/industries/transportation-and-logistics)
 - **Grab uses real-time data platforms to optimize 10M daily trips across Southeast Asia** — [Grab Engineering Blog](https://engineering.grab.com/)
-- **DoorDash** (Snowflake customer): processes 25M+ daily orders on Snowflake with ML-powered delivery optimization and marketplace analytics -- [snowflake.com/customers/doordash](https://www.snowflake.com/en/customers/all-customers/case-study/doordash/)
+- **Indeed** (Snowflake customer): processes 25M+ daily orders on Snowflake with ML-powered delivery optimization and marketplace analytics -- [snowflake.com/customers/indeed](https://www.snowflake.com/en/customers/all-customers/case-study/indeed/)
 
 ## Key Demo Numbers
 
