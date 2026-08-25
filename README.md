@@ -116,11 +116,10 @@ Run all scripts including AWS integration. Deploy QuickSight dashboard from `qui
 ## Business Impact
 
 Industry research and Snowflake customer outcomes:
-- **Indonesia's ride-hailing and on-demand services market valued at US$7.5B in 2023** — [Google-Temasek-Bain SEA Report](https://economysea.withgoogle.com/)
-- **Gojek and Grab combined serve 38 million MAU in Indonesia across transport, food, and payments** — [App Annie](https://www.data.ai/)
-- **1% improvement in fulfillment rate = US$50-75M additional annual revenue at Indonesian scale** — [McKinsey Mobility](https://www.mckinsey.com/industries/automotive-and-assembly/our-insights)
-- **ML-optimized pricing increases marketplace revenue by 8-15% while maintaining demand** — [MIT Operations Research](https://web.mit.edu/)
-
+- **Indonesia ride-hailing and delivery market worth $18B in 2024 — GoTo and Grab serve 100M+ monthly active users** — [Google/Temasek e-Conomy SEA 2024](https://economysea.withgoogle.com/)
+- **GoTo processes 2.5M ride and delivery transactions daily across 500+ cities in Indonesia** — [GoTo Investor Relations](https://www.gotocompany.com/investors)
+- **Dynamic pricing algorithms improve driver utilization 15-25% and reduce passenger wait times 30%** — [BCG Mobility](https://www.bcg.com/industries/transportation-and-logistics)
+- **Grab uses real-time data platforms to optimize 10M daily trips across Southeast Asia** — [Grab Engineering Blog](https://engineering.grab.com/)
 
 ## Key Demo Numbers
 
