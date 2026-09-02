@@ -32,15 +32,22 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+
+  // KPI values come from /api/data, which reads CURATED.KPI_SUMMARY. The literal
+  // stays as a fallback so the card still renders if the API is unavailable.
+  const kpiVal = (title: string, fallback: string): string =>
+    (data?.kpiCards as { title: string; value: string }[] | undefined)
+      ?.find((k) => k.title === title)?.value ?? fallback;
+
   const title = narrative?.title || 'SEA AWS Demo';
 
   const executiveCockpit = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Rides (MTD)" value="42M" status="neutral" />
-        <KPICard title="Driver Utilization" value="68%" status="neutral" />
-        <KPICard title="Avg Wait Time" value="4.2 min" status="neutral" />
-        <KPICard title="Active Drivers" value="412K" status="neutral" />
+        <KPICard title="Rides (MTD)" value={kpiVal('Rides (MTD)', '42M')} status="neutral" />
+        <KPICard title="Driver Utilization" value={kpiVal('Driver Utilization', '68%')} status="neutral" />
+        <KPICard title="Avg Wait Time" value={kpiVal('Avg Wait Time', '4.2 min')} status="neutral" />
+        <KPICard title="Active Drivers" value={kpiVal('Active Drivers', '412K')} status="neutral" />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="lg:col-span-1">
@@ -87,9 +94,9 @@ export default function HomePage() {
   const domainTab1 = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <KPICard title="Surge Pricing Active" value="12%" />
-        <KPICard title="ETA Accuracy" value="94%" />
-        <KPICard title="Cancellation Rate" value="8.4%" />
+        <KPICard title="Surge Pricing Active" value={kpiVal('Surge Pricing Active', '12%')} />
+        <KPICard title="ETA Accuracy" value={kpiVal('ETA Accuracy', '94%')} />
+        <KPICard title="Cancellation Rate" value={kpiVal('Cancellation Rate', '8.4%')} />
       </div>
       <Chart
         data={data?.detail || [{ x: 'Mon', y: 24 }, { x: 'Tue', y: 28 }, { x: 'Wed', y: 22 }, { x: 'Thu', y: 31 }, { x: 'Fri', y: 26 }, { x: 'Sat', y: 19 }, { x: 'Sun', y: 23 }]}
