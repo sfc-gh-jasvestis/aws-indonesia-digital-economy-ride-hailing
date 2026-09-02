@@ -1,106 +1,79 @@
-# Demo Script: Ride-Hailing & Super-App Analytics
-## ~4-Minute Recorded Walkthrough
-**Format**: Screen recording with voiceover
-**Target**: Customer meeting / booth loop / social share
-**Narrative**: "Snowflake powers super-app intelligence — Dynamic Tables maintain real-time demand-supply balance, ML.FORECAST projects demand by zone, and Cortex AI optimizes pricing and driver allocation across transport, food, and payments"
-**Demo Mode**: Open app with `?demo=true` for presenter notes
+# Ride-Hailing & Super-App Analytics
 
----
+**Indonesia - Digital Economy & E-Commerce**
+Use case: Ride-Hailing & On-Demand Services
 
-## Two Personas
+> Real-time demand-supply matching intelligence for Indonesia's super-app economy — ML.FORECAST predicts ride demand, Dynamic Tables build driver allocation dashboards, and Cortex AI generates surge pricing recommendations.
 
-| Persona | Role | Tool | What they care about |
-|---|---|---|---|
-| **Bimo Prasetyo** | VP Marketplace Operations | React App (SPCS) | Supply-demand balance, driver earnings, surge management, service reliability |
-| **Citra Handayani** | Pricing & Incentives Lead | Amazon QuickSight | Dynamic pricing effectiveness, driver incentive ROI, demand elasticity, competitor pricing |
+## Why Snowflake
 
----
+Snowflake powers super-app intelligence — Dynamic Tables maintain real-time demand-supply balance, ML.FORECAST projects demand by zone, and Cortex AI optimizes pricing and driver allocation across transport, food, and payments
 
-## What's Built
+- **ML.FORECAST for 30-minute demand prediction by zone** - Only demo using ML.FORECAST for ride-hailing demand forecasting at zone level
+- **Real-time demand-supply balance via Dynamic Tables** - 5-minute refresh of 500M monthly demand events for operational decisions
+- **AI-generated pricing and allocation recommendations** - Cortex AI produces zone-level surge and driver allocation strategies
+- **Indonesian super-app context** - 100M trips/month, 2M drivers, Gojek/Grab competitive dynamics, Rupiah economics
 
-| Layer | Component | Detail |
+## What is deployed
+
+| | |
+|---|---|
+| Database | `ID_DIGITAL_ECONOMY_RIDE_HAILING` |
+| Service | `ID_DIGITAL_ECONOMY_RIDE_HAILING_APP` |
+| Compute pool | `SEA_DEMOS_INDONESIA_POOL` |
+| Dimension table | `RAW.ZONE_CONFIG` (20 rows) |
+| Fact table | `RAW.DEMAND_EVENTS` (250,000 rows, 90 days) |
+| Curated layer | `CURATED.PERFORMANCE_SUMMARY`, `CURATED.TREND_ANALYSIS`, `CURATED.KPI_SUMMARY` |
+| Currency | IDR (Rp) |
+
+Regions in play: Jakarta, North Sumatra, Riau, East Kalimantan, Sulawesi
+Segments: Motorbike, Car Economy, Car Premium, Food Delivery
+
+Dynamic tables are created suspended and refreshed on demand:
+
+```bash
+./refresh_demo_data.sh ID_DIGITAL_ECONOMY_RIDE_HAILING
+```
+
+## KPI cards
+
+Every card below is served live from `CURATED.KPI_SUMMARY`. The app keeps the
+original literal as a fallback, so it still renders if Snowflake is unreachable.
+
+| Card | Value | Backed by |
 |---|---|---|
-| **RAW** | 6 tables | TRIPS (100000000), DRIVERS (2000000), DEMAND_EVENTS (500000000), PRICING_LOGS (50000000), INCENTIVES (5000000), ZONE_CONFIG (5000) |
-| **CURATED** | 4 Dynamic Tables | DEMAND_SUPPLY_BALANCE, FULFILLMENT_METRICS, DRIVER_ECONOMICS, PRICING_EFFECTIVENESS |
-| **ML** | ML.FORECAST | Forecasting + anomaly detection |
-| **AI** | COMPLETE, AI_CLASSIFY, SUMMARIZE | Classification + extraction |
-| **Search** | Cortex Search | 5000 documents indexed |
-| **Agent** | MARKETPLACE_OPS_AGENT | Semantic View + Search tools |
+| Rides (MTD) | `42M` | total across Zone Config |
+| Driver Utilization | `68%` | average per event |
+| Avg Wait Time | `4.2 min` | average per event |
+| Active Drivers | `412K` | total across Zone Config |
+| Surge Pricing Active | `12%` | total across Zone Config |
+| ETA Accuracy | `94%` | average per event |
+| Cancellation Rate | `8.4%` | average per event |
 
 
----
+## Demo flow
 
-## The Story
+1. Command Center
+2. Demand & Supply
+3. Driver Economics
+4. Ask AI
+5. Architecture & Data
 
-Indonesia's super-app market processes 100 million monthly trips, but fulfillment rates are slipping as driver supply struggles to match peak demand. With surge pricing effectiveness declining and driver churn at 8% monthly, the VP Marketplace needs real-time demand-supply intelligence and ML-powered allocation — not post-hoc analysis of yesterday's failures.
+## Talking points
 
----
+- **100M trips/month** - across ride, food, and courier services
+- **89% fulfillment** - trip completion rate (target: 93%)
+- **2M drivers** - active driver-partners on platform
+- **500M events/month** - demand events processed in real-time
+- **Rp 45B/week** - incentive spend on driver and rider campaigns
 
-## Script
+## Business impact
 
-### [0:00–0:45] COMMAND CENTER
-
-**Show**: Command Center tab
-
-> "100 million trips per month across ride, food, and courier — fulfillment at 89%."
-
-**Action**: Point at 100M trips and 89% fulfillment
-
-### [0:45–1:30] DEMAND & SUPPLY
-
-**Show**: Demand & Supply tab
-
-> "ML.FORECAST predicts demand 30 minutes ahead per zone — enables proactive driver allocation."
-
-**Action**: Show demand forecast vs actual by zone
-
-### [1:30–2:15] DRIVER ECONOMICS
-
-**Show**: Driver Economics tab
-
-> "Average driver earning Rp 180K/day — 15% below 6-month ago (competition effect)."
-
-**Action**: Show driver earnings distribution
-
-### [2:15–3:00] ASK AI
-
-**Show**: Ask AI tab
-
-> "Bimo asks: 'What's the current fulfillment rate across all services?'"
-
-**Action**: Type fulfillment question
-
-### [3:00–3:45] ARCHITECTURE & DATA
-
-**Show**: Architecture & Data tab
-
-> "Six Snowflake capabilities, six AWS services."
-
-**Action**: Walk through architecture diagram
-
+- Indonesia's ride-hailing and on-demand services market valued at US$7.5B in 2023 (Google-Temasek-Bain SEA Report)
+- Gojek and Grab combined serve 38 million MAU in Indonesia across transport, food, and payments (App Annie)
+- 1% improvement in fulfillment rate = US$50-75M additional annual revenue at Indonesian scale (McKinsey Mobility)
+- ML-optimized pricing increases marketplace revenue by 8-15% while maintaining demand (MIT Operations Research)
 
 ---
-
-## Key Demo Differentiators
-
-1. **ML.FORECAST for 30-minute demand prediction by zone** — Only demo using ML.FORECAST for ride-hailing demand forecasting at zone level
-2. **Real-time demand-supply balance via Dynamic Tables** — 5-minute refresh of 500M monthly demand events for operational decisions
-3. **AI-generated pricing and allocation recommendations** — Cortex AI produces zone-level surge and driver allocation strategies
-4. **Indonesian super-app context** — 100M trips/month, 2M drivers, Gojek/Grab competitive dynamics, Rupiah economics
-
-
----
-
-## Demo Prep Checklist
-
-### Data Verification
-- [ ] `SELECT COUNT(*) FROM RIDE_HAILING_ANALYTICS.RAW.TRIPS` → 100000000
-- [ ] `SELECT COUNT(*) FROM RIDE_HAILING_ANALYTICS.RAW.DRIVERS` → 2000000
-- [ ] `SELECT COUNT(*) FROM RIDE_HAILING_ANALYTICS.RAW.DEMAND_EVENTS` → 500000000
-
-### ML Model Verification
-- [ ] `SELECT COUNT(*) FROM RIDE_HAILING_ANALYTICS.ML.DEMAND_FORECAST_RESULTS` → >0
-
-### AI/Agent Verification
-- [ ] `SELECT COUNT(*) FROM RIDE_HAILING_ANALYTICS.AI.CANCELLATION_CLASSIFICATION` → >0
-
+Generated from `generator/demo_specs/aws-indonesia-digital-economy-ride-hailing.json`. Do not hand-edit: run
+`python3 generator/gen_repo_docs.py aws-indonesia-digital-economy-ride-hailing` instead.
