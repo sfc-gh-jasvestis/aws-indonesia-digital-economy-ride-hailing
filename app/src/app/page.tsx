@@ -53,6 +53,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="indonesia"
+            regions={data?.regions}
             markers={[{"label": "Jakarta", "value": "Core: 42M users", "color": "blue", "size": "lg"}, {"label": "Surabaya", "value": "East Java: 8M", "color": "blue", "size": "md"}, {"label": "Bandung", "value": "W.Java: 6M", "color": "green", "size": "md"}, {"label": "Medan", "value": "Sumatra: 4M", "color": "green", "size": "md"}, {"label": "Makassar", "value": "E.Indonesia: 2M", "color": "amber", "size": "sm"}]}
             routes={[]}
             title="Geographic Overview"
@@ -69,7 +70,7 @@ export default function HomePage() {
           title="Ride Volume (Hourly Peak)"
         />
         <Chart
-          data={data?.categories || [{ category: 'North', count: 82 }, { category: 'Central', count: 74 }, { category: 'South', count: 91 }, { category: 'Highland', count: 68 }, { category: 'Coastal', count: 77 }]}
+          data={data?.categoryMetric || [{ category: 'North', count: 82 }, { category: 'Central', count: 74 }, { category: 'South', count: 91 }, { category: 'Highland', count: 68 }, { category: 'Coastal', count: 77 }]}
           type="bar"
           xKey="category"
           yKeys={[{ key: 'count', name: 'Rp B' }]}
