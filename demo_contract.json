@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "repo": "aws-indonesia-digital-economy-ride-hailing",
+  "operation": "on-demand",
+  "data_classification": "synthetic demonstration only",
+  "currency": "IDR",
+  "grains": {
+    "RAW.ZONES": "one row per service zone (one service in one Indonesian city)",
+    "RAW.ZONE_DAILY": "one row per zone per day (90 days)",
+    "RAW.DRIVER_DOCUMENTS": "one row per zone (driver compliance document snapshot)",
+    "CURATED.PERFORMANCE_SUMMARY": "one row per zone",
+    "CURATED.TREND_ANALYSIS": "one row per day",
+    "CURATED.CAUSE_SUMMARY": "one row per shortage cause",
+    "CURATED.KPI_SUMMARY": "one row per KPI",
+    "ML.SHORTAGE_RISK_SCORES": "one row per zone (latest day)"
+  },
+  "metrics": {
+    "Fulfillment Rate": "100 * SUM(TRIP_COUNT) / SUM(REQUEST_COUNT)",
+    "Unfulfilled Requests": "SUM(UNFULFILLED_COUNT)",
+    "Supply Shortage Hours": "SUM(SHORTAGE_HOURS)",
+    "Rider Cancellation Rate": "100 * SUM(CANCELLED_COUNT) / SUM(REQUEST_COUNT)",
+    "Shortage Zone-Days": "COUNT_IF(SHORTAGE_HOURS > 0)",
+    "GMV (IDR B)": "SUM(GMV_IDR) / 1e9",
+    "Trips Completed": "SUM(TRIP_COUNT)",
+    "Driver Payout On-Time Rate": "100 * SUM(PAYOUT_SETTLED) / SUM(PAYOUT_DUE)",
+    "Zones Monitored": "COUNT(RAW.ZONES)",
+    "Driver Document Coverage": "100 * SUM(LEAST(ON_FILE_QTY, REQUIRED_QTY)) / SUM(REQUIRED_QTY)",
+    "Driver Documents Pending": "SUM(PENDING_QTY)"
+  },
+  "chart_bindings": {
+    "daily_unfulfilled": [
+      "CURATED.TREND_ANALYSIS.METRIC_DATE",
+      "UNFULFILLED_COUNT"
+    ],
+    "shortage_by_cause": [
+      "CURATED.CAUSE_SUMMARY.SHORTAGE_CAUSE",
+      "SHORTAGE_HOURS",
+      "SHORTAGE_DAYS"
+    ],
+    "payout_vs_shortage": [
+      "CURATED.PERFORMANCE_SUMMARY.PAYOUT_ON_TIME_PCT",
+      "SHORTAGE_HOURS"
+    ],
+    "quicksight_shortage_risk": [
+      "ENTITY_ID",
+      "MAX(SHORTAGE_PROB_7D)"
+    ]
+  },
+  "freshness": "MAX(EVENT_DATE) is an observation watermark; requestedAt is not freshness",
+  "required_capabilities": {
+    "core_pipeline": "Curated KPIs reconcile to a RAW recomputation (run_core.py checks this on every build)",
+    "shortage_risk_model": "Snowflake ML CLASSIFICATION of P(supply shortage in the zone in the next 7 days), evaluated on an out-of-time holdout",
+    "forecast_and_anomaly": "14-day marketplace-wide unfulfilled-request FORECAST; pickup ETA ANOMALY_DETECTION (train 75 days, detect last 15)",
+    "search": "Cortex Search SEARCH.PLAYBOOK_SEARCH over synthetic supply-shortage playbooks (one per service and shortage cause)",
+    "semantic_analytics": "Semantic view APP.RIDE_HAILING_ANALYTICS and Cortex Agent APP.MARKETPLACE_AGENT using analyst + search tools",
+    "grounded_ai": "Agent answers return generated SQL and playbook citations; the action memo uses only KPI, zone, shortage-cause and risk rows",
+    "quicksight": "DIRECT_QUERY dashboard (zones, daily unfulfilled requests, shortage hours by zone, supply-shortage risk, trip events loaded) through a read-only Snowflake service user",
+    "quicksight_q": "Amazon Q topic over the curated datasets for natural-language questions",
+    "aws_ingestion": "Amazon Data Firehose -> S3 -> Snowpipe AUTO_INGEST into RAW.LIVE_TRIPS",
+    "notifications": "APP.LIVE_TRIP_ALERT logs new UNFULFILLED requests to APP.ALERT_LOG and emails via SYSTEM$SEND_EMAIL; alert and tasks suspended between demos",
+    "orchestration": "Task graph APP.TASK_REFRESH_CURATED -> APP.TASK_RESCORE_RISK run on demand (EXECUTE TASK)",
+    "app_deployment": "SPCS service APP.ID_RIDE_APP; routes /api/data, /api/ask, /api/agent"
+  },
+  "builds": {
+    "snowflake": {
+      "database": "INDONESIA_RIDE_HAILING_SNOWFLAKE",
+      "app_setting": "DEMO_PLATFORM=snowflake",
+      "live_trips": "APP.SIMULATE_TRIPS(n)",
+      "memo": "Cortex AI_COMPLETE (claude-sonnet-4-5)"
+    },
+    "aws": {
+      "database": "INDONESIA_RIDE_HAILING_AWS",
+      "app_setting": "DEMO_PLATFORM=aws",
+      "live_trips": "Amazon Data Firehose -> S3 -> Snowpipe",
+      "memo": "Amazon Bedrock Claude Sonnet 4.5 via APP.BEDROCK_GENERATE",
+      "capabilities": "see required_capabilities"
+    }
+  }
+}
